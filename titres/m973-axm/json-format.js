@@ -10,7 +10,9 @@ const errMsg = '--------------------------------> ERROR'
 const jsonFormat = geojsonFeature => {
   const domaineId = 'm'
   const t = geojsonFeature.properties.type
-  const typeId = (() => {
+  const typeId = 'axm';
+
+  (() => {
     if (t === 'PER') {
       return 'prx'
     } else if (t === 'Concession') {
@@ -56,99 +58,21 @@ const jsonFormat = geojsonFeature => {
 
   const titreDemarcheId = `${titreId}-${demarcheId}01`
 
-  const demarchePosition = (() => {
-    return 1
-  })()
-
-  const titresDemarches = [{
-    id: titreDemarcheId,
-    typeId: demarcheId,
-    titreId,
-    statutId: 'ind',
-    ordre: demarchePosition
-  }]
-
   // L'étape des AEX est DEX (décision expresse)
   // L'étape des autres types est DPU (JORF)
   const etapeId = typeId === 'axm' ? 'dex' : 'dpu'
 
   const titreEtapeId = `${titreDemarcheId}-${etapeId}01`
 
-  const titresEtapes = [{
-    id: titreEtapeId,
-    titreDemarcheId,
-    typeId: etapeId,
-    statutId: 'acc',
-    ordre: 1,
-    date: demarcheEtapeDate,
-    duree,
-    dateFin: demarcheEtapeDateFin,
-    surface: geojsonFeature.properties.surf_off || 0
-  }]
+  const demarchePosition = (() => {
+    return 1
+  })()
 
-  if (geojsonFeature.properties.gda && geojsonFeature.properties.gda.prolongations) {
-    let prol = JSON.parse(geojsonFeature.properties.gda.prolongations)
-    if (prol[0]) {
-      prol = prol[0]
-
-      const demarcheId = typeId === 'cxx' ? 'pro' : 'pr1'
-
-      const titreDemarcheId = `${titreId}-${demarcheId}01`
-
-      titresDemarches.push({
-        id: titreDemarcheId,
-        typeId: demarcheId,
-        titreId,
-        statutId: 'ind',
-        ordre: demarchePosition
-      })
-
-      const etapeId = 'men'
-      const date = prol.date_p
-
-      const titreEtapeId = `${titreDemarcheId}-${etapeId}01`
-
-      titresEtapes.push({
-        id: titreEtapeId,
-        titreDemarcheId,
-        typeId: etapeId,
-        statutId: 'acc',
-        ordre: 1,
-        date,
-        duree,
-        dateFin: demarcheEtapeDateFin,
-        surface: geojsonFeature.properties.surf_off || 0
-      })
-
-      if (prol.date_octroi) {
-        const etapeId = 'dex'
-        const date = prol.date_octroi
-        const dateFin = prol.date_echeance
-
-        const titreEtapeId = `${titreDemarcheId}-${etapeId}01`
-
-        titresEtapes.push({
-          id: titreEtapeId,
-          titreDemarcheId: titreDemarcheId,
-          typeId: etapeId,
-          statutId: 'acc',
-          ordre: 2,
-          date,
-          duree,
-          dateFin,
-          surface: geojsonFeature.properties.surf_off || 0
-        })
-
-      }
-    }
-  }
-
-  const titulaire = geojsonFeature.properties.titulaire
+  const titulaire = geojsonFeature.properties.titulaire;
   const entreprises = [
     {
       id: geojsonFeature.properties.entreprise_id,
       nom: _.startCase(_.toLower(titulaire)),
-      // siren: geojsonFeature.properties.gda.demandeur.siret.substr(0, 9),
     }
   ]
 
@@ -156,6 +80,7 @@ const jsonFormat = geojsonFeature => {
     subs.reduce((res, cur) => {
       const sub = substances.find(
         s =>
+          (s['nom'] && s['nom'] === cur) ||
           (s['symbole'] && s['symbole'] === cur) ||
           (cur.includes('connexes') && 'oooo')
       )
@@ -200,8 +125,24 @@ const jsonFormat = geojsonFeature => {
         : null
     },
     titresSubstances: [...substancePrincipales, ...substanceConnexes],
-    titresDemarches,
-    titresEtapes,
+    titresDemarches: [{
+      id: titreDemarcheId,
+      typeId: demarcheId,
+      titreId,
+      statutId: 'ind',
+      ordre: demarchePosition
+    }],
+    titresEtapes: [{
+      id: titreEtapeId,
+      titreDemarcheId: titreDemarcheId,
+      typeId: etapeId,
+      statutId: 'acc',
+      ordre: 1,
+      date: demarcheEtapeDate,
+      duree,
+      dateFin: demarcheEtapeDateFin,
+      surface: geojsonFeature.properties.surf_off || 0
+    }],
     titresEmprises: {
       titreEtapeId,
       empriseId: 'ter'

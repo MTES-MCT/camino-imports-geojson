@@ -88,7 +88,7 @@ const jsonFormat = geojsonFeature => {
       domaineId,
       statutId: 'val',
       references: {
-        métier: geojsonFeature.properties.NUMERO
+        DGEC: geojsonFeature.properties.NUMERO
       }
     },
     titresSubstances: [
@@ -101,14 +101,14 @@ const jsonFormat = geojsonFeature => {
       id: titreDemarcheId,
       demarcheId,
       titreId,
-      demarcheStatutId: 'ind',
+      statutId: 'ind',
       ordre: demarcheOrdre
     },
     titresEtapes: {
       id: titreEtapeId,
       titreDemarcheId,
       etapeId: 'dpu',
-      etapeStatutId: 'acc',
+      statutId: 'acc',
       ordre: 1,
       date: demarcheEtapeDate,
       duree,

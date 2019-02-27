@@ -9,24 +9,11 @@ const errMsg = '--------------------------------> ERROR'
 
 const jsonFormat = geojsonFeature => {
   const domaineId = 'm'
-  const t = geojsonFeature.properties.type
-  const typeId = (() => {
-    if (t === 'PER') {
-      return 'prx'
-    } else if (t === 'Concession') {
-      return 'cxx'
-    } else if (t === 'axm') {
-      return 'axm'
-    } else if (t === 'PEX') {
-      return 'pxm'
-    } else {
-      return errMsg
-    }
-  })()
+  const typeId = 'cxx'
 
   // console.log(geojsonFeature.properties)
 
-  const titreNom = _.startCase(_.toLower(geojsonFeature.properties.nomtitre))
+  const titreNom = _.startCase(_.toLower(geojsonFeature.properties.Nom))
 
   const demarcheEtapeDate = _.replace(
     geojsonFeature.properties.date_oct,
@@ -86,69 +73,11 @@ const jsonFormat = geojsonFeature => {
     surface: geojsonFeature.properties.surf_off || 0
   }]
 
-  if (geojsonFeature.properties.gda && geojsonFeature.properties.gda.prolongations) {
-    let prol = JSON.parse(geojsonFeature.properties.gda.prolongations)
-    if (prol[0]) {
-      prol = prol[0]
-
-      const demarcheId = typeId === 'cxx' ? 'pro' : 'pr1'
-
-      const titreDemarcheId = `${titreId}-${demarcheId}01`
-
-      titresDemarches.push({
-        id: titreDemarcheId,
-        typeId: demarcheId,
-        titreId,
-        statutId: 'ind',
-        ordre: demarchePosition
-      })
-
-      const etapeId = 'men'
-      const date = prol.date_p
-
-      const titreEtapeId = `${titreDemarcheId}-${etapeId}01`
-
-      titresEtapes.push({
-        id: titreEtapeId,
-        titreDemarcheId,
-        typeId: etapeId,
-        statutId: 'acc',
-        ordre: 1,
-        date,
-        duree,
-        dateFin: demarcheEtapeDateFin,
-        surface: geojsonFeature.properties.surf_off || 0
-      })
-
-      if (prol.date_octroi) {
-        const etapeId = 'dex'
-        const date = prol.date_octroi
-        const dateFin = prol.date_echeance
-
-        const titreEtapeId = `${titreDemarcheId}-${etapeId}01`
-
-        titresEtapes.push({
-          id: titreEtapeId,
-          titreDemarcheId: titreDemarcheId,
-          typeId: etapeId,
-          statutId: 'acc',
-          ordre: 2,
-          date,
-          duree,
-          dateFin,
-          surface: geojsonFeature.properties.surf_off || 0
-        })
-
-      }
-    }
-  }
-
   const titulaire = geojsonFeature.properties.titulaire
   const entreprises = [
     {
       id: geojsonFeature.properties.entreprise_id,
       nom: _.startCase(_.toLower(titulaire)),
-      // siren: geojsonFeature.properties.gda.demandeur.siret.substr(0, 9),
     }
   ]
 

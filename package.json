@@ -12,13 +12,27 @@
     "titres-h-jorf-w": "onchange '**/*.js' -i -- npm run titres-h-jorf",
     "titres-m": "node ./titres/m/index.js",
     "titres-m-w": "onchange '**/*.js' -i -- npm run titres-m",
+    "titres-m-cxx": "node ./titres/m-cxx/index.js",
+    "titres-m-cxx-w": "onchange '**/*.js' -i -- npm run titres-m-cxx",
     "titres-g": "node ./titres/g/index.js",
     "titres-g-w": "onchange '**/*.js' -i -- npm run titres-g",
     "titres-c": "node ./titres/c/index.js",
     "titres-c-w": "onchange '**/*.js' -i -- npm run titres-c",
     "titres-m973": "node ./titres/m973/index.js",
     "titres-m973-w": "onchange '**/*.js' -i -- npm run titres-m973",
-    "titres": "npm run titres-h && npm run titres-m && npm run titres-g && npm run titres-s && npm run titres-c && npm run titres-m973",
+    "titres-m973-axm": "node ./titres/m973-axm/index.js",
+    "titres-m973-axm-w": "onchange '**/*.js' -i -- npm run titres-m973-axm",
+    "titres-m973-pxm": "node ./titres/m973-pxm/index.js",
+    "titres-m973-pxm-w": "onchange '**/*.js' -i -- npm run titres-m973-pxm",
+    "titres-m973-cxx": "node ./titres/m973-cxx/index.js",
+    "titres-m973-cxx-w": "onchange '**/*.js' -i -- npm run titres-m973-cxx",
+    "titres-m973-prx": "node ./titres/m973-prx/index.js",
+    "titres-m973-prx-w": "onchange '**/*.js' -i -- npm run titres-m973-prx",
+    "titres-m973-arm": "node ./titres/m973-arm/index.js",
+    "titres-m973-arm-w": "onchange '**/*.js' -i -- npm run titres-m973-arm",
+    "titres-deb": "node ./titres/deb/index.js",
+    "titres-deb-w": "onchange '**/*.js' -i -- npm run titres-deb",
+    "titres": "npm run titres-h && npm run titres-m && npm run titres-g && npm run titres-s && npm run titres-c && npm run titres-m973 && npm run titres-m973-axm && npm run titres-m973-pxm && npm run titres-m973-cxx && npm run titres-m973-prx && npm run titres-deb",
     "titres-w": "onchange '**/*.js' -i -- npm run titres"
   },
   "author": "",
@@ -29,6 +43,7 @@
     "@turf/helpers": "^6.1.4",
     "camelize": "^1.0.0",
     "chalk": "^2.4.1",
+    "csvtojson": "^2.0.8",
     "decamelize": "^2.0.0",
     "json2csv": "^4.2.0",
     "left-pad": "^1.3.0",
@@ -45,5 +60,45 @@
     "eslint-plugin-promise": "^3.8.0",
     "eslint-plugin-standard": "^3.1.0",
     "onchange": "^4.1.0"
+  },
+  "prettier": {
+    "semi": false,
+    "singleQuote": true
+  },
+  "eslintConfig": {
+    "parser": "@typescript-eslint/parser",
+    "extends": [
+      "standard",
+      "prettier",
+      "prettier/standard"
+    ],
+    "env": {
+      "node": true,
+      "jest/globals": true
+    },
+    "plugins": [
+      "jest",
+      "jsdoc"
+    ],
+    "rules": {
+      "jsdoc/check-examples": 1,
+      "jsdoc/check-param-names": 1,
+      "jsdoc/check-tag-names": 1,
+      "jsdoc/check-types": 1,
+      "jsdoc/newline-after-description": 1,
+      "jsdoc/no-undefined-types": 1,
+      "jsdoc/require-description": 1,
+      "jsdoc/require-description-complete-sentence": 1,
+      "jsdoc/require-example": 1,
+      "jsdoc/require-hyphen-before-param-description": 1,
+      "jsdoc/require-param": 1,
+      "jsdoc/require-param-description": 1,
+      "jsdoc/require-param-name": 1,
+      "jsdoc/require-param-type": 1,
+      "jsdoc/require-returns": 1,
+      "jsdoc/require-returns-description": 1,
+      "jsdoc/require-returns-type": 1,
+      "jsdoc/valid-types": 1
+    }
   }
 }

@@ -105,14 +105,14 @@ const jsonFormat = geojsonFeature => {
       id: titreDemarcheId,
       demarcheId,
       titreId,
-      demarcheStatutId: 'ind',
+      statutId: 'ind',
       ordre: demarchePosition
     },
     titresEtapes: {
       id: titreEtapeId,
       titreDemarcheId: titreDemarcheId,
       etapeId: 'dpu',
-      etapeStatutId: 'acc',
+      statutId: 'acc',
       ordre: 1,
       date: demarcheEtapeDate,
       duree:
